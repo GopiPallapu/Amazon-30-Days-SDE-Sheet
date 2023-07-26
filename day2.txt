@@ -1,0 +1,82 @@
+// TC -> O(n) SC -> O(n) 
+vector<int> twoSum(vector<int>& nums, int target) {
+   int n =nums.size();
+   unordered_map<int,int> compliments;
+   for(int i=0;i<n;i++){
+       if(compliments.find(target-nums[i])!=compliments.end()){
+           auto it = compliments.find(target-nums[i]);
+           return {it->second,i};
+       }
+       else
+        compliments[nums[i]]=i;
+   }
+   return {};
+}
+// TC -> O(n) SC -> O(1) 
+vector<int> twoSumWithSortedArray(vector<int>& numbers, int target) {
+  int n = numbers.size();
+  int low =0;
+  int high = n-1;
+  while(low<=high){
+      int sum = numbers[low]+numbers[high];
+      if(sum == target){
+          return {low+1,high+1};
+      }
+      else if(sum < target){
+          low +=1;
+      }
+      else
+        high -=1;
+  }
+  return {};
+}
+// TC -> O(n) SC -> O(1)
+int maxAreaWithWater(vector<int>& height) {
+    int n = height.size();
+    int maxVal = INT_MIN;
+    int low =0;
+    int high = n-1;
+    while(low<=high){
+        int minHeight = min(height[low] , height[high]);
+        if(maxVal < minHeight*(high-low)){
+            maxVal = minHeight*(high-low);
+        }
+        if(height[low] < height[high]){
+            low +=1;
+        }
+        else
+            high -=1;
+
+    }
+    return maxVal;
+}
+// TC -> O(n) SC -> O(1)
+int trapRainWater(vector<int>& height) {
+ int n = height.size();
+ int low = 0;
+ int high = n-1;
+ int leftBar = height[low];
+ int rightBar = height[high];
+ int maxWater =0;
+ while(low<=high){
+     if(leftBar < rightBar){
+         if(height[low] > leftBar){
+             leftBar = height[low];
+         }
+        else {
+            maxWater +=leftBar-height[low];
+            low++;
+        }
+     }
+     else{
+         if(height[high] > rightBar){
+             rightBar = height[high];
+         }
+         else{
+             maxWater +=rightBar - height[high];
+             high--;
+         }
+     }
+ }
+ return maxWater;
+}

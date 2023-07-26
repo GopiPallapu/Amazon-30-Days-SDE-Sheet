@@ -1,0 +1,59 @@
+// TC -> O(n) SC -> O(1)
+int thirdMax(vector<int>& nums) {
+   int firstMax = INT_MIN;
+   int secondMax = INT_MIN;
+   int thirdMax  = INT_MIN;
+   int n = nums.size();
+   if(n==1)return nums[0];
+   if(n==2) return max(nums[0] , nums[1]);
+   for(int i =0;i<n;i++){
+       firstMax = max(firstMax , nums[i]);
+   }
+   for(int i=0;i<n;i++){
+       if(nums[i] >= secondMax && nums[i] <firstMax){
+           secondMax = nums[i];
+       }
+   }
+    int flag=0;
+     for(int i=0;i<n;i++){
+       if(nums[i] >= thirdMax && nums[i] <secondMax){
+           thirdMax = nums[i];
+           flag=1;
+       }
+   }
+   if(flag==1)return thirdMax;
+   else return firstMax;
+}
+// TC -> O(n) SC -> O(1) extra space
+vector<int> productExceptSelf(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> result(n,0);
+    result[0]=1;
+    for(int i =1;i<n;i++){
+       result[i] = result[i-1]*nums[i-1];
+    }
+    int temp=1;
+    for(int i=n-1;i>=0;i--){
+       result[i] = result[i]*temp;
+       temp = temp*nums[i];
+    }
+    return result;
+}
+// TC -> O(n) SC -> O(n)
+int lengthOfLongestSubstring(string& s){
+    int n = s.length();
+    unordered_map<char ,int> charMap;
+    int left =0;
+    int maxLength=INT_MIN;
+    for(int i=0;i<n;i++){
+        if(charMap.find(s[i])==charMap.end() || charMap[s[i]]<left){
+            charMap[s[i]]=i;
+            maxLength = max(maxLength , i-left+1);
+        }
+        else{
+            left = charMap[s[i]]+1;
+            charMap[s[i]] = i;
+        }
+    }
+    return maxLength;
+}
